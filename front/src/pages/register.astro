@@ -1,0 +1,17 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+export const prerender = true;
+---
+
+<Layout title="Registrarse">
+  <h1>Registrarse</h1>
+  <p>¿Ya tienes una cuenta? <a href="/signin">Iniciar sesión</a></p>
+  <form action="/api/auth/register" method="post">
+    <label for="email">Correo electrónico</label>
+    <input type="email" name="email" id="email" />
+    <label for="password">Contraseña</label>
+    <input type="password" name="password" id="password" />
+    <button type="submit">Iniciar sesión</button>
+  </form>
+</Layout>
