@@ -3,7 +3,7 @@ export const prerender = false
 import type { APIRoute } from "astro";
 import { supabase } from "../../../lib/supabase";
 
-export const POST: APIRoute = async ({ request, cookies, redirect }) => {
+export const POST: APIRoute = async ({ request, redirect }) => {
     const user = await supabase.auth.getUser()
   const formData = await request.formData();
   const name = formData.get("name")?.toString();
@@ -14,7 +14,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
     return new Response("Name and path is required", { status: 400 });
   }
 
-  const { data, error } = await supabase
+  const { error } = await supabase
   .from('projects')
   .insert([
     { name, base_url, user_id },

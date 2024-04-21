@@ -6,7 +6,7 @@ import { Icon } from 'astro-icon/components'
 
 const { project_id } = Astro.params;
 
-let { data: endpoints, error } = await supabase
+let { data: endpoints } = await supabase
   .from('endpoints')
   .select('*')
   .eq('project', project_id)

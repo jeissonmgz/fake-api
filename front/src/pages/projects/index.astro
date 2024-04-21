@@ -4,7 +4,7 @@ import Link from "../../components/Link.astro";
 import { supabase } from "../../lib/supabase";
 import { Icon } from 'astro-icon/components'
 
-let { data: projects, error } = await supabase
+let { data: projects } = await supabase
   .from('projects')
   .select('*')
 

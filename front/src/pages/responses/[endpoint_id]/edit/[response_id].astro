@@ -7,7 +7,7 @@ import Select from "../../../../components/Select.astro";
 
 const { endpoint_id, response_id } = Astro.params;
 
-let { data: [response], error } = await supabase
+let { data: [response] } = await supabase
   .from('responses')
   .select('*')
   .eq('id', response_id)

@@ -7,7 +7,7 @@ import { supabase } from "../../../../lib/supabase";
 
 const { endpoint_id } = Astro.params;
 
-let { data: [endpoint], error } = await supabase
+let { data: [endpoint] } = await supabase
   .from('endpoints')
   .select("*")
   .eq('id', endpoint_id)

@@ -8,7 +8,7 @@ const apiClient = import.meta.env.API_URL_CLIENT;
 
 const { endpoint_id } = Astro.params;
 
-let { data: responses, error } = await supabase
+let { data: responses } = await supabase
   .from('responses')
   .select('*')
   .eq('endpoint', endpoint_id)
