@@ -11,7 +11,7 @@ let { data: endpoints, error } = await supabase
   .select('*')
   .eq('project', project_id)
 
-  let { data: [project], errorProject } = await supabase
+  let { data: [project] } = await supabase
   .from('projects')
   .select("*")
   .eq('id', project_id)

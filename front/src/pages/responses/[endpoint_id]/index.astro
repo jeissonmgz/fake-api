@@ -11,10 +11,9 @@ const { endpoint_id } = Astro.params;
 let { data: responses, error } = await supabase
   .from('responses')
   .select('*')
-  .select(`*`)
   .eq('endpoint', endpoint_id)
 
-  let { data: [endpoint], errorEndpoint } = await supabase
+  let { data: [endpoint] } = await supabase
   .from('endpoints')
   .select(`
     *,
