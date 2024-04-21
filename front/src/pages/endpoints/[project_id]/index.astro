@@ -1,41 +1,77 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import Link from "../../../components/Link.astro";
+import Button from "../../../components/Button.astro";
 import { supabase } from "../../../lib/supabase";
-import { Icon } from 'astro-icon/components'
+import { Icon } from "astro-icon/components";
+import Stepper from "../../../components/Stepper.astro";
 
 const { project_id } = Astro.params;
 
 let { data: endpoints } = await supabase
-  .from('endpoints')
-  .select('*')
-  .eq('project', project_id)
+    .from("endpoints")
+    .select("*")
+    .eq("project", project_id);
 
-  let { data: [project] } = await supabase
-  .from('projects')
-  .select("*")
-  .eq('id', project_id)
-
-
+let {
+    data: [project],
+} = await supabase.from("projects").select("*").eq("id", project_id);
 ---
-<Layout title="endpoints">
-    <div class="p-4">
-<h1 class="text-xl font-bold">Step 2: Choice an endpoint</h1>
-<p><a href="/projects">Go back</a></p>
-<h2>{project.name}</h2>
-<span>Url base: /{project.base_url}</span>
-<Link type="primary" href={`/projects/edit/${project_id}`}>Edit project</Link>
-<div class="flex flex-col lg:flex-row gap-2 grow flex-wrap py-4">
-    {endpoints.map(item=> (
-        <a
-            class="bg-zinc-800 rounded-md px-4 py-4 lg:basis-48 flex justify-between items-center cursor-pointer"
-            href={`/responses/${item.id}`}>
-            {item.method}
-            {item.path}
-            <Icon name="mdi:chevron-right" />
-        </a>)
-    )}
-</div>
-    <Link type="primary" href={`/endpoints/${project_id}/new`}>Add new endpoint</Link>
-</div>
+
+<Layout title="Endpoints">
+    <div class="flex min-h-screen p-8 gap-8">
+        <nav class="bg-zinc-800 rounded-md p-4 flex flex-col justify-between">
+            <p class="font-bold text-sm text-center">Mock your API</p>
+            <Stepper
+                links={[
+                    { name: "Project", href: "/projects" },
+                    { name: "Endpoint", href: null },
+                    { name: "Responses", href: null },
+                ]}
+                selected={1}
+            />
+
+            <form action="/api/auth/signout">
+                <Button color="secundary" type="submit">Signout</Button>
+            </form>
+        </nav>
+
+        <div class="grow">
+            <Link href="/projects" type="secundary">
+                <Icon size={24} name="mdi:chevron-left-circle-outline" />
+                Go back
+            </Link>
+            <div class="mt-8 px-6 py-4 bg-zinc-950 rounded-lg">
+                <h2 class="text-md font-bold">{project.name}</h2>
+                <span>Url base: /{project.base_url}</span>
+                <Link type="secundary" href={`/projects/edit/${project_id}`}
+                    >Edit project</Link
+                >
+            </div>
+            <h1 class="text-xl font-bold">Step 2: Choice an endpoint</h1>
+            <div class="flex flex-col gap-2 grow flex-wrap py-4">
+                {
+                    endpoints.map((item) => (
+                        <a
+                            class="bg-blue-500 rounded-md px-4 py-4 flex justify-between items-center cursor-pointer"
+                            href={`/responses/${item.id}`}
+                        >
+                            <p>
+                                <span class="bg-white text-blue-500 rounded-lg px-4 py-1 font-bold uppercase">
+                                    {item.method}
+                                </span>
+                                <span class="pl-2">
+                                    /{item.path}
+                                </span>
+                            </p>
+                            <Icon name="mdi:chevron-right" />
+                        </a>
+                    ))
+                }
+            </div>
+            <Link type="primary" href={`/endpoints/${project_id}/new`}
+                >Add endpoint</Link
+            >
+        </div>
+    </div>
 </Layout>

@@ -1,0 +1,36 @@
+---
+import { Icon } from 'astro-icon/components'
+
+interface Props {
+    links: {
+        name: string;
+        href: string;
+    }[];
+    selected: number;
+}
+
+const { links, selected } = Astro.props;
+---
+<div class="flex flex-col gap-4">
+    {links.map(({href, name}, index)=> (
+        <>
+            {index !== 0 && <Icon size={24} name="mdi:dots-vertical" />}
+            <a href={index > selected? null : href} class="flex items-center gap-2">
+                    {
+                        index < selected && <Icon size={24} name="mdi:check-circle" class="text-emerald-300" />
+                    }
+                    {
+                        index === selected && <Icon size={24} name="mdi:radio-button-checked" class="text-cyan-300" />
+                    }
+                    {
+                        index > selected && <Icon size={24} name="mdi:progress-question" class="text-stone-300" />
+                    }
+                    <div class={`flex flex-col ${index > selected?"text-stone-300" : "white"}`}>
+                        <span class="text-xs">Step {index + 1}</span>
+                        <span class="font-bold">{name}</span>
+                    </div>
+            </a>
+        </>
+    ))}
+</div>
+

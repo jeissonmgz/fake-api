@@ -1,12 +1,14 @@
 ---
 interface Props {
     type: 'submit' | 'button';
+    color?: 'primary' | 'secundary';
 }
 
-const { type } = Astro.props;
+const { type, color = 'primary' } = Astro.props;
+const bg = color === 'primary'? 'bg-gradient-to-tr from-indigo-500 to-blue-500' : 'bg-indigo-500';
 ---
 <button
-    class="w-32 bg-gradient-to-r from-indigo-500 to-blue-500 text-l py-2 px-4 rounded"
+    class={`w-32 ${bg} text-l py-2 px-4 rounded font-bold`}
     type={type}>
     <slot />
 </button>
