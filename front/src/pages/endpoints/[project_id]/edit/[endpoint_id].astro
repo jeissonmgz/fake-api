@@ -2,6 +2,7 @@
 import Layout from "../../../../layouts/Layout.astro";
 import Input from "../../../../components/Input.astro";
 import Button from "../../../../components/Button.astro";
+import Select from "../../../../components/Select.astro";
 import { supabase } from "../../../../lib/supabase";
 
 const { endpoint_id } = Astro.params;
@@ -21,7 +22,17 @@ let { data: [endpoint], error } = await supabase
       <label for="path">Path</label>
       <Input type="text" name="path" value={endpoint.path} />
       <label for="method">Method</label>
-      <Input type="text" name="method" value={endpoint.method} />
+      <Select
+        name="method" 
+        value={endpoint.method}
+        items={[
+          {value: "post", label: "Post"},
+          {value: "get", label: "Get"},
+          {value: "put", label: "Put"},
+          {value: "patch", label: "Patch"},
+          {value: "delete", label: "Delete"}
+        ]}
+      />
       <input type="hidden" name="id" value={endpoint_id} />
       <Button type="submit">
         Edit

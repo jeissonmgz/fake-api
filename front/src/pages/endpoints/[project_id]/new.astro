@@ -1,6 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import Input from "../../../components/Input.astro";
+import Select from "../../../components/Select.astro";
 import Button from "../../../components/Button.astro";
 const { project_id } = Astro.params;
 ---
@@ -13,7 +14,16 @@ const { project_id } = Astro.params;
       <label for="path">Path</label>
       <Input type="text" name="path" />
       <label for="method">Method</label>
-      <Input type="text" name="method" />
+      <Select
+        name="method" 
+        items={[
+          {value: "post", label: "Post"},
+          {value: "get", label: "Get"},
+          {value: "put", label: "Put"},
+          {value: "patch", label: "Patch"},
+          {value: "delete", label: "Delete"}
+        ]}
+      />
       <input type="hidden" value={project_id} name="project" />
       <Button type="submit">
         Add
