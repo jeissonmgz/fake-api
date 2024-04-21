@@ -17,13 +17,14 @@ let { data: [response], error } = await supabase
   <div class="p-4">
     <h1>Edit response</h1>
     <p><a href={`/responses/${endpoint_id}`}>Go back</a></p>
-    <form action="/api/project/new" method="post" class="flex flex-col gap-2">
+    <form action="/api/responses/edit" method="post" class="flex flex-col gap-2">
       <label for="body">Body</label>
       <Input type="text" name="body" value={JSON.stringify(response.body)} />
       <label for="head">Head</label>
       <Input type="text" name="head" value={JSON.stringify(response.head)} />
       <label for="code">Code</label>
       <Input type="text" name="code" value={response.code} />
+      <input type="hidden" name="id" value={response.id} />
       <Button type="submit">
         Edit
       </Button>

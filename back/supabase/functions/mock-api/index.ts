@@ -27,11 +27,6 @@ const getResponse = async (c: Context, method: string) => {
     method_path: method, 
     project_path: project
   })
-  console.log("DATA_API", supabaseUrl,  supabaseKey, {
-    endpoint_path: endpoint, 
-    method_path: method, 
-    project_path: project
-  })
 if (error) console.error(error)
 else console.log(data)
 

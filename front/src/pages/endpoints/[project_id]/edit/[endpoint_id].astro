@@ -17,11 +17,12 @@ let { data: [endpoint], error } = await supabase
   <div class="p-4">
     <h1>Edit endpoint</h1>
     <p><a href={`/responses/${endpoint_id}`}>Go back</a></p>
-    <form action="/api/project/new" method="post" class="flex flex-col gap-2">
+    <form action="/api/endpoints/edit" method="post" class="flex flex-col gap-2">
       <label for="path">Path</label>
       <Input type="text" name="path" value={endpoint.path} />
       <label for="method">Method</label>
       <Input type="text" name="method" value={endpoint.method} />
+      <input type="hidden" name="id" value={endpoint_id} />
       <Button type="submit">
         Edit
       </Button>

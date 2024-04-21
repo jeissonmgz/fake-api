@@ -16,7 +16,6 @@ let { data: endpoints, error } = await supabase
   .select("*")
   .eq('id', project_id)
 
-  console.log("Endponts", endpoints, project)
 
 ---
 <Layout title="endpoints">
