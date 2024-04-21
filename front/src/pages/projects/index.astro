@@ -1,0 +1,29 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Link from "../../components/Link.astro";
+import { supabase } from "../../lib/supabase";
+import { Icon } from 'astro-icon/components'
+
+let { data: projects, error } = await supabase
+  .from('projects')
+  .select('*')
+
+  console.log(projects)
+---
+
+<Layout title="Projects">
+    <div class="p-4">
+<h1 class="text-xl font-bold">Step 1: Choice a project</h1>
+<div class="flex flex-col lg:flex-row gap-2 grow flex-wrap py-4">
+    {projects.map(item=> (
+        <a
+            class="bg-zinc-800 rounded-md px-4 py-4 lg:basis-48 flex justify-between items-center cursor-pointer"
+            href={`/endpoints/${item.id}`}>
+            {item.name}
+            <Icon name="mdi:chevron-right" />
+        </a>)
+    )}
+</div>
+    <Link type="primary" href="/projects/new">Add new project</Link>
+</div>
+</Layout>

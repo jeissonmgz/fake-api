@@ -1,0 +1,10 @@
+---
+interface Props {
+	name: string;
+    value?: string;
+    type: 'text' | 'email' | 'number';
+}
+
+const { name, type, value } = Astro.props;
+---
+<input type={type} name={name} id={name} class="rounded p-2 text-black max-w-96" value={value} />

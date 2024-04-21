@@ -1,0 +1,29 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Input from "../../../components/Input.astro";
+import Button from "../../../components/Button.astro";
+import { supabase } from "../../../lib/supabase";
+
+const { project_id } = Astro.params;
+
+let { data: [project], errorProject } = await supabase
+  .from('projects')
+  .select("*")
+  .eq('id', project_id)
+---
+
+<Layout title="New project">
+  <div class="p-4">
+    <h1>Edit Project: {project.name}</h1>
+    <p><a href={`/endpoints/${project_id}`}>Go back</a></p>
+    <form action="/api/project/new" method="post" class="flex flex-col gap-2">
+      <label for="name">Name</label>
+      <Input type="text" name="name" value={project.name} />
+      <label for="base_url">Path base</label>
+      <Input type="text" name="base_url" value={project.base_url} />
+      <Button type="submit">
+        Edit
+      </Button>
+    </form>
+  </div>
+  </Layout>

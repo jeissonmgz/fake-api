@@ -1,0 +1,30 @@
+---
+import Layout from "../../../../layouts/Layout.astro";
+import Input from "../../../../components/Input.astro";
+import Button from "../../../../components/Button.astro";
+import { supabase } from "../../../../lib/supabase";
+
+const { endpoint_id } = Astro.params;
+
+let { data: [endpoint], error } = await supabase
+  .from('endpoints')
+  .select("*")
+  .eq('id', endpoint_id)
+
+---
+
+<Layout title="Edit endpoint">
+  <div class="p-4">
+    <h1>Edit endpoint</h1>
+    <p><a href={`/responses/${endpoint_id}`}>Go back</a></p>
+    <form action="/api/project/new" method="post" class="flex flex-col gap-2">
+      <label for="path">Path</label>
+      <Input type="text" name="path" value={endpoint.path} />
+      <label for="method">Method</label>
+      <Input type="text" name="method" value={endpoint.method} />
+      <Button type="submit">
+        Edit
+      </Button>
+    </form>
+  </div>
+  </Layout>
