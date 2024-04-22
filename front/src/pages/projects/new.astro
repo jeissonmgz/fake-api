@@ -2,12 +2,17 @@
 import Layout from "../../layouts/Layout.astro";
 import Input from "../../components/Input.astro";
 import Button from "../../components/Button.astro";
+import Link from "../../components/Link.astro";
+import { Icon } from "astro-icon/components";
 ---
 
 <Layout title="New project">
   <div class="p-4">
-    <h1>Add new project</h1>
-    <p><a href="/projects">Go back</a></p>
+    <Link href="/projects" type="secundary">
+      <Icon size={24} name="mdi:chevron-left-circle-outline" />
+      Go back
+    </Link>
+    <h1 class="text-xl font-bold my-4">Add Project</h1>
     <form action="/api/projects/new" method="post" class="flex flex-col gap-2">
       <label for="name">Name</label>
       <Input type="text" name="name" />

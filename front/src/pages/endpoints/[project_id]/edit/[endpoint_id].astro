@@ -4,6 +4,8 @@ import Input from "../../../../components/Input.astro";
 import Button from "../../../../components/Button.astro";
 import Select from "../../../../components/Select.astro";
 import { supabase } from "../../../../lib/supabase";
+import { Icon } from "astro-icon/components";
+import Link from "../../../../components/Link.astro";
 
 const { endpoint_id } = Astro.params;
 
@@ -16,8 +18,11 @@ let { data: [endpoint] } = await supabase
 
 <Layout title="Edit endpoint">
   <div class="p-4">
-    <h1>Edit endpoint</h1>
-    <p><a href={`/responses/${endpoint_id}`}>Go back</a></p>
+    <Link href={`/responses/${endpoint_id}`} type="secundary">
+      <Icon size={24} name="mdi:chevron-left-circle-outline" />
+      Go back
+    </Link>
+    <h1 class="text-xl font-bold my-4">Edit endpoint</h1>
     <form action="/api/endpoints/edit" method="post" class="flex flex-col gap-2">
       <label for="path">Path</label>
       <Input type="text" name="path" value={endpoint.path} />

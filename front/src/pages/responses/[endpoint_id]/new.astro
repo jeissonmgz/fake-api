@@ -3,13 +3,18 @@ import Layout from "../../../layouts/Layout.astro";
 import Input from "../../../components/Input.astro";
 import Button from "../../../components/Button.astro";
 import Select from "../../../components/Select.astro";
+import Link from "../../../components/Link.astro";
+import { Icon } from "astro-icon/components";
 const { endpoint_id } = Astro.params;
 ---
 
 <Layout title="New Response">
   <div class="p-4">
-    <h1>Add new response</h1>
-    <p><a href={`/responses/${endpoint_id}`}>Go back</a></p>
+    <Link href={`/responses/${endpoint_id}`} type="secundary">
+      <Icon size={24} name="mdi:chevron-left-circle-outline" />
+      Go back
+    </Link>
+    <h1 class="text-xl font-bold my-4">Add Response</h1>
     <form action="/api/responses/new" method="post" class="flex flex-col gap-2">
       <label for="body">Body</label>
       <Input type="text" name="body" />

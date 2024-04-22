@@ -2,48 +2,107 @@
 import Layout from "../../../layouts/Layout.astro";
 import Link from "../../../components/Link.astro";
 import { supabase } from "../../../lib/supabase";
-import { Icon } from 'astro-icon/components'
+import { Icon } from "astro-icon/components";
+import Stepper from "../../../components/Stepper.astro";
+import Button from "../../../components/Button.astro";
 
 const apiClient = import.meta.env.API_URL_CLIENT;
 
 const { endpoint_id } = Astro.params;
 
 let { data: responses } = await supabase
-  .from('responses')
-  .select('*')
-  .eq('endpoint', endpoint_id)
+  .from("responses")
+  .select("*")
+  .eq("endpoint", endpoint_id);
 
-  let { data: [endpoint] } = await supabase
-  .from('endpoints')
-  .select(`
+let {
+  data: [endpoint],
+} = await supabase
+  .from("endpoints")
+  .select(
+    `
     *,
     project (
       *
     )
-  `)
-  .eq('id', endpoint_id)
-
-
+  `,
+  )
+  .eq("id", endpoint_id);
+  console.log(endpoint)
 ---
+
 <Layout title="Responses">
-    <div class="p-4">
-<h1 class="text-xl font-bold">Step 3: Choice a response</h1>
-<p><a href={`/endpoints/${endpoint.project.id}`}>Go back</a></p>
-<h2>{endpoint.method}</h2>
-<span>Url: {apiClient}/{endpoint.project.base_url}/{endpoint.path}</span>
-<Link type="primary" href={`/endpoints/${endpoint.project.id}/edit/${endpoint.id}`}>Edit endpoint</Link>
-<div class="flex flex-col lg:flex-row gap-2 grow flex-wrap py-4">
-    {responses.map(item=> (
-        <a
-            class="bg-zinc-800 rounded-md px-4 py-4 lg:basis-48 flex justify-between items-center cursor-pointer"
-            href={`/responses/${endpoint_id}/edit/${item.id}`}>
-            {item.code}
-            {JSON.stringify(item.body)}
-            {JSON.stringify(item.head)}
-            <Icon name="mdi:chevron-right" />
-        </a>)
-    )}
-</div>
-    <Link type="primary" href={`/responses/${endpoint_id}/new`}>Add new response</Link>
-</div>
+  <div class="flex min-h-screen p-8 gap-8">
+    <nav class="bg-zinc-800 rounded-md p-4 flex flex-col justify-between">
+      <p class="font-bold text-sm text-center">Mock your API</p>
+      <Stepper
+        links={[
+          { name: "Project", href: "/projects" },
+          { name: "Endpoint", href: `/endpoints/${endpoint.project.id}` },
+          { name: "Responses", href: null },
+        ]}
+        selected={2}
+      />
+
+      <form action="/api/auth/signout">
+        <Button color="secundary" type="submit">Signout</Button>
+      </form>
+    </nav>
+
+    <div class="grow">
+      <Link href={`/endpoints/${endpoint.project.id}`} type="secundary">
+          <Icon size={24} name="mdi:chevron-left-circle-outline" />
+          Go back
+      </Link>
+      <div class="mt-8 px-6 py-4 bg-zinc-950 rounded-lg">
+        <div class="flex gap-2 items-center py-2">
+          <span class="bg-white text-blue-500 rounded-lg px-4 py-1 font-bold uppercase">
+            {endpoint.method}
+          </span>
+          <input type="hidden" id="api_url" value={`${apiClient}/${endpoint.project.base_url}/${endpoint.path}`} />{apiClient}/{endpoint.project.base_url}/{endpoint.path}</input>
+          <Button color="primary" type="button" id="copy">Copy</Button>
+        </div>
+      <Link type="secundary" href={`/endpoints/${endpoint.project.id}/edit/${endpoint.id}`}
+            >Edit endpoint</Link>
+      </div>
+      <h1 class="text-xl font-bold">Step 3: Choice a response by default</h1>
+      
+      <div class="flex flex-col lg:flex-row gap-2 grow flex-wrap py-4">
+        {
+          responses.map((item) => (
+            <div
+              class="bg-zinc-800 rounded-md px-4 py-4 lg:basis-48 flex justify-between items-center gap-2"
+            >
+            <a href={`/api/endpoints/select?id=${endpoint.id}&response=${item.id}`}>
+              <Icon name={ endpoint.default_response === item.id?'mdi:radio-button-checked': 'mdi:radio-button-unchecked'} class="cursor-pointer text-blue-300" size={24} />
+            </a>
+              <div>
+                <p>{item.code}</p>
+                <p>{JSON.stringify(item.body)}</p>
+                <p>{JSON.stringify(item.head)}</p>
+              </div>
+              <div>
+                <Link
+                  type="secundary"
+                  href={`/responses/${endpoint_id}/edit/${item.id}`}
+                  >Edit</Link>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+      <Link type="primary" href={`/responses/${endpoint_id}/new`}
+        >Add response</Link
+      >
+    </div>
+  </div>
 </Layout>
+<script>
+  const buttonCopy = document.getElementById('copy');
+  buttonCopy.addEventListener('click', () => {
+    const copyText = document.getElementById("api_url");
+    const url = copyText?.value;
+    navigator.clipboard.writeText(url);
+    alert("Copied the text: " + url);
+  });
+</script>

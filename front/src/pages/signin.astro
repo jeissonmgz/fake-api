@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Input from "../components/Input.astro";
 import Button from "../components/Button.astro";
+import Link from "../components/Link.astro";
 
 export const prerender = true;
 
@@ -16,15 +17,17 @@ if (accessToken && refreshToken) {
 ---
 
 <Layout title="Login">
-  <h1>Login</h1>
-  <p><a href="/register">Create account</a></p>
+  <h1 class="text-xl font-bold my-4">Login</h1>
   <form action="/api/auth/signin" method="post" class="flex flex-col gap-2">
     <label for="email">Email</label>
     <Input type="email" name="email" />
     <label for="password">Password</label>
     <Input type="password" name="password" />
-    <Button type="submit">
-      Login
-    </Button>
+    <div class="flex gap-4">
+      <Button type="submit">
+        Login
+      </Button>
+      <Link href="/register" type="secundary">Create account</Link>
+    </div>
   </form>
 </Layout>

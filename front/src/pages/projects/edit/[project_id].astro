@@ -3,6 +3,8 @@ import Layout from "../../../layouts/Layout.astro";
 import Input from "../../../components/Input.astro";
 import Button from "../../../components/Button.astro";
 import { supabase } from "../../../lib/supabase";
+import Link from "../../../components/Link.astro";
+import { Icon } from "astro-icon/components";
 
 const { project_id } = Astro.params;
 
@@ -14,8 +16,11 @@ let { data: [project] } = await supabase
 
 <Layout title="Edit Project">
   <div class="p-4">
-    <h1>Edit Project: {project.name}</h1>
-    <p><a href={`/endpoints/${project_id}`}>Go back</a></p>
+    <Link href={`/endpoints/${project_id}`} type="secundary">
+      <Icon size={24} name="mdi:chevron-left-circle-outline" />
+      Go back
+    </Link>
+    <h1 class="text-xl font-bold my-4">Edit Project</h1>
     <form action="/api/projects/edit" method="post" class="flex flex-col gap-2">
       <label for="name">Name</label>
       <Input type="text" name="name" value={project.name} />
